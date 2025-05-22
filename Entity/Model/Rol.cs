@@ -9,8 +9,8 @@ namespace Entity.Model
 {
     public class Rol : BaseEntity
     {
-        public required string Name { get; set; }
-        public required string Description { get; set; }
-        public required IEnumerable<RolUser> RolUsers { get; set; } 
+        public  string Name { get; set; }
+        public  string Description { get; set; }
+        public  IEnumerable<RolUser> RolUsers { get; set; } 
     }
 }
