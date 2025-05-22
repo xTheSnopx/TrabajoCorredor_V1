@@ -1,4 +1,4 @@
-﻿namespace Utilities.Mail
+﻿snamespace Utilities.Mail
 {
     public class SmtpSettings
     {
