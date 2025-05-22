@@ -142,29 +142,18 @@ var origenesPermitidos = builder.Configuration.GetValue<string>("origenesPermiti
     app.UseAuthorization();
 
     app.MapControllers();
-
-    // Ensure database is created and apply pending migrations
+    // Inicializar base de datos y aplicar migraciones
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
         try
         {
             var dbContext = services.GetRequiredService<ApplicationDbContext>();
+            var logger = services.GetRequiredService<ILogger<Program>>();
 
-            // Check if database exists and create it if not
-            if (dbContext.Database.EnsureCreated())
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("Base de datos creada exitosamente.");
-            }
-
-            // Apply pending migrations
-            if (dbContext.Database.GetPendingMigrations().Any())
-            {
-                dbContext.Database.Migrate();
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("Migraciones aplicadas exitosamente.");
-            }
+            // Aplicar migraciones (esto crea la BD si no existe y aplica todas las migraciones)
+            dbContext.Database.Migrate();
+            logger.LogInformation("Base de datos verificada y migraciones aplicadas exitosamente.");
         }
         catch (Exception ex)
         {
