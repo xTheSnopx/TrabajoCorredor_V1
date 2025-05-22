@@ -1,9 +1,9 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using Entity.Model;
+using Entity.Model.Base;
 
 using System.Data;
 using Dapper;
@@ -42,6 +42,30 @@ namespace Entity.Context
                 .HasOne(ru => ru.Rol)
                 .WithMany(r => r.RolUsers)
                 .HasForeignKey(ru => ru.RolId);
+                
+            // Configuración para todas las entidades que heredan de BaseEntity
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes()
+                .Where(t => t.ClrType.IsSubclassOf(typeof(BaseEntity))))
+            {
+                // Configurar CreatedAt para que no sea nullable
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property("CreatedAt")
+                    .IsRequired();
+                    
+                // Configurar UpdatedAt y DeleteAt como nullable
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property("UpdatedAt")
+                    .IsRequired(false);
+                    
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property("DeleteAt")
+                    .IsRequired(false);
+                    
+                // Configurar Status con un valor predeterminado de true
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property("Status")
+                    .HasDefaultValue(true);
+            }
         }
 
         
@@ -203,61 +227,29 @@ namespace Entity.Context
             ChangeTracker.DetectChanges();
             
             var entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is User || e.Entity is Rol || e.Entity is RolUser);
+                .Where(e => e.Entity is BaseEntity);
 
             var currentDateTime = DateTime.UtcNow;
 
             foreach (var entry in entries)
             {
-                if (entry.State == EntityState.Added)
+                if (entry.Entity is BaseEntity entity)
                 {
-                    // Establece las fechas de creación para entidades nuevas
-                    if (entry.Entity is User user)
+                    switch (entry.State)
                     {
-                        user.CreatedAt = currentDateTime;
-                        user.Status = true;
-                    }
-                    else if (entry.Entity is Rol rol)
-                    {
-                        rol.CreatedAt = currentDateTime;
-                        rol.Status = true;
-                    }
-                    else if (entry.Entity is RolUser rolUser)
-                    {
-                        rolUser.CreatedAt = currentDateTime;
-                        rolUser.Status = true;
-                    }
-                }
-                else if (entry.State == EntityState.Modified)
-                {
-                    // Actualiza las fechas de modificación
-                    if (entry.Entity is User user)
-                    {
-                        user.UpdatedAt = currentDateTime;
-                    }
-                    else if (entry.Entity is Rol rol)
-                    {
-                        rol.UpdatedAt = currentDateTime;
-                    }
-                    else if (entry.Entity is RolUser rolUser)
-                    {
-                        rolUser.UpdatedAt = currentDateTime;
-                    }
-                }
-                else if (entry.State == EntityState.Deleted)
-                {
-                    // Actualiza las fechas de modificación
-                    if (entry.Entity is User user)
-                    {
-                        user.DeleteAt = currentDateTime;
-                    }
-                    else if (entry.Entity is Rol rol)
-                    {
-                        rol.DeleteAt = currentDateTime;
-                    }
-                    else if (entry.Entity is RolUser rolUser)
-                    {
-                        rolUser.DeleteAt = currentDateTime;
+                        case EntityState.Added:
+                            entity.CreatedAt = currentDateTime;
+                            entity.Status = true;
+                            break;
+                        case EntityState.Modified:
+                            entity.UpdatedAt = currentDateTime;
+                            break;
+                        case EntityState.Deleted:
+                            // Convertimos el borrado en un borrado lógico
+                            entry.State = EntityState.Modified;
+                            entity.DeleteAt = currentDateTime;
+                            entity.Status = false;
+                            break;
                     }
                 }
             }

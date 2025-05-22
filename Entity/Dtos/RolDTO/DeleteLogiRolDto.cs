@@ -4,16 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entity.Dtos.Base;
 
 namespace Entity.Dtos.RolDTO
 {
     /// <summary>
     /// DTO para la creación de un nuevo rol (operación Delete Logico)
     /// </summary>
-    public class DeleteLogiRolDto
+    public class DeleteLogiRolDto : BaseDto
     {
-        public int Id { get; set; }
-        public required bool Status { get; set; } = false;
-
+        public DeleteLogiRolDto()
+        {
+            Status = false;
+        }
     }
 }
