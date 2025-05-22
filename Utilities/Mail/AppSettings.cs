@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Utilities.Mail
 {
-    internal class AppSettings
+    public class AppSettings
     {
+        public string ResetPasswordBaseUrl { get; set; }
+        public string FrontendUrl { get; set; } // ejemplo adicional
     }
 }
+
