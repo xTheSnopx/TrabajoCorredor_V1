@@ -8,7 +8,7 @@ namespace Business.Interfaces
     /// Define los métodos de negocio específicos para la gestíon de usuarios.
     ///Hereda operaciones CRUD genéricas de <see cref="IBaseBusiness{User, UserDto}"/>.
     ///</summary>
-    public interface IUserBusiness : IBaseBusiness<UserDto, User>
+    public interface IUserBusiness : IBaseBusiness<User, UserDto>
     {
         /// <summary>
         /// Obtiene un usuario por su dirección de correo electrónico.
