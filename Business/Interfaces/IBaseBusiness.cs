@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using Data.Implements.BaseDate;
 using Data.Interfaces;
+using Entity.Dtos.Base;
+using Entity.Model.Base;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Business.Interfaces
 {
-    public interface IBaseBusiness<T, D> where T : BaseModel where D : BaseDto
+    public interface IBaseBusiness<T, D> where T : BaseEntity where D : BaseDto
     {
         /// <summary>
         /// Obtiene todas las entidades desde la base de datos.

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Utilities.Interfaces;
 using Data.Interfaces;
 using FluentValidation.Results;
+using Entity.Dtos.Base;
+using Entity.Model.Base;
 
 namespace Business.Implements
 {
@@ -24,7 +26,7 @@ namespace Business.Implements
     /// - Logging detallado de todas las operaciones
     /// - Manejo consistente de errores
     /// </remarks>
-    public class BaseBusiness<T, D> : ABaseBusiness<T, D> where T : BaseModel where D : BaseDto
+    public class BaseBusiness<T, D> : ABaseBusiness<T, D> where T : BaseEntity where D : BaseDto
     {
 
         /// <summary>

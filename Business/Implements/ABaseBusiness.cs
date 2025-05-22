@@ -1,5 +1,7 @@
 using Business.Interfaces;
 using Data.Interfaces;
+using Entity.Dtos.Base;
+using Entity.Model.Base;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 namespace Business.Implements
 {
 
-    public abstract class ABaseBusiness<T, D> : IBaseBusiness<T, D> where T : BaseModel where D : BaseDto
+    public abstract class ABaseBusiness<T, D> : IBaseBusiness<T, D> where T : BaseEntity where D : BaseDto
     {
 
 
