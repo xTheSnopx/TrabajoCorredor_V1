@@ -8,7 +8,7 @@ namespace Entity.Dtos.AuthDTO
 {
     public class AuthDto
     {
-        public required string Token { get; set; }
+        public  string Token { get; set; }
         public DateTime Expiracion { get; set; }
     }
 

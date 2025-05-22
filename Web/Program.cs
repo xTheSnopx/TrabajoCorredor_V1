@@ -40,6 +40,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
 
 // Configure JWT
 builder.Services.AddScoped<IJwtGenerator, GenerateTokenJwt>();

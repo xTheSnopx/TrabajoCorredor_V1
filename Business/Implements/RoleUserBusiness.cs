@@ -19,7 +19,7 @@ namespace Business.Implements
     /// Contiene la lógica de negocio de los métodos específicos para la entidad RolUser.
     /// Extiende BaseBusiness heredando la lógica de negocio de los métodos base.
     /// </summary>
-    public class RoleUserBusiness :BaseBusiness < RolUserDto, RolUser>, IRoleUserBusiness
+    public class RoleUserBusiness : BaseBusiness<RolUser, RolUserDto>, IRoleUserBusiness
     {
         /// <summary>
         /// Proporciona acceso a los métodos de la capa de datos de roles de usuario.
@@ -35,7 +35,7 @@ namespace Business.Implements
         /// <param name="logger">Servicio de logging para registro de eventos y errores.</param>
         /// <param name="helpers">Implementación de helpers genéricos utilizados por la capa de negocio.</param>
         public RoleUserBusiness(IRolUserData rolUserData, IMapper mapper, ILogger<RoleUserBusiness> logger, IGenericIHelpers helpers)
-           : base(rolUserData, logger, mapper, helpers)
+           : base(rolUserData, mapper, logger, helpers)
         {
             _rolUserData = rolUserData;
         }
@@ -52,7 +52,7 @@ namespace Business.Implements
         /// Se lanza cuando el ID del rol de usuario es inválido o cuando no se proporciona
         /// ningún campo para actualizar.
         /// </exception>
-        public async Task<bool> UpdateParcialRoleUserAsync(int id, int roluser,UpdateRolUserDto dto)
+        public async Task<bool> UpdateParcialRoleUserAsync(UpdateRolUserDto dto)
         {
             if (dto.Id <= 0)
                 throw new ArgumentException("ID inválido.");

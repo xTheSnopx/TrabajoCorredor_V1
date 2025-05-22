@@ -21,17 +21,21 @@ namespace Business.Implements
     /// Contiene la logica de negocio de los metodos especificos para la entidad Rol
     /// Extiende BaseBusiness heredando la logica de negocio de los metodos base 
     /// </summary>
-    public class UserBusiness : BaseBusiness<UserDto, User>, IUserBusiness
+    public class UserBusiness : BaseBusiness<User, UserDto>, IUserBusiness
     {
         private readonly IUserData _userData;
         private readonly IEmailService _emailService;
         private readonly IJwtGenerator _jwtGenerator;
-        public UserBusiness(IUserData userData, IMapper mapper, ILogger<UserBusiness> logger, IGenericIHelpers helpers, IEmailService emailService, IJwtGenerator jwtGenerator)
-            : base(userData, logger, mapper, helpers)
+        private readonly AppSettings _appSettings;
+
+        public UserBusiness(IUserData userData, IMapper mapper, ILogger<UserBusiness> logger, IGenericIHelpers helpers, IEmailService emailService, IJwtGenerator jwtGenerator,
+            IOptions<AppSettings> appSettings)
+            : base(userData, mapper, logger, helpers)
         {
             _userData = userData;
             _emailService = emailService;
             _jwtGenerator = jwtGenerator;
+            _appSettings = appSettings.Value;
         }
 
         ///<summary>
@@ -91,7 +95,7 @@ namespace Business.Implements
         ///</summary>
         /// <param name="dto">Objeto UserDto con los datos del nuevo usuario.</param>
         /// <returns>El usuario creado como UserDto.</returns>
-        public async Task<UserDto> CreateAsync(UserDto dto)
+        public async override Task<UserDto> CreateAsync(UserDto dto)
         {
             var user = _mapper.Map<User>(dto);
             user.Password = HashPassword(user.Password);
@@ -213,7 +217,7 @@ namespace Business.Implements
 
             // Creamos el enlace que el usuario deberá seguir para restablecer su contraseña
             // Nota: En producción, la URL base debería configurarse en appsettings.json
-            string resetLink = $"https://Encarte1817.com/reset-password?token={token}";
+            string resetLink = $"{_appSettings.ResetPasswordBaseUrl}?token={token}";
 
             _logger.LogInformation($"Generando enlace de recuperación de contraseña para {email}");
 

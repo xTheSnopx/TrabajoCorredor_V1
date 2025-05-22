@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Utilities.Interfaces;
 using Data.Interfaces;
 using FluentValidation.Results;
+using Entity.Dtos.Base;
+using Entity.Model.Base;
 
 namespace Business.Implements
 {
@@ -24,8 +26,7 @@ namespace Business.Implements
     /// - Logging detallado de todas las operaciones
     /// - Manejo consistente de errores
     /// </remarks>
-    public class BaseBusiness<TDto, TEntity> : ABaseBusiness<TDto, TEntity>
-        where TEntity : class
+    public class BaseBusiness<T, D> : ABaseBusiness<T, D> where T : BaseEntity where D : BaseDto
     {
 
         /// <summary>
@@ -38,6 +39,9 @@ namespace Business.Implements
         /// </summary>
         protected readonly IGenericIHelpers _helpers;
 
+        protected readonly IBaseData<T> _data;
+        protected readonly ILogger _logger;
+
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase BaseBusiness.
@@ -47,13 +51,15 @@ namespace Business.Implements
         /// <param name="mapper">Instancia de AutoMapper para mapeo entre DTOs y entidades</param>
         /// <param name="helpers">Servicio de utilidades que proporciona funcionalidades como validación</param>
         public BaseBusiness(
-            IBaseData<TEntity> repository,
-            ILogger logger,
+            IBaseData<T> data,
             IMapper mapper,
+            ILogger logger,
             IGenericIHelpers helpers)
-            : base(repository, logger)
+            : base()
         {
+            _data = data;
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger;
             _helpers = helpers ?? throw new ArgumentNullException(nameof(helpers));
         }
 
@@ -67,7 +73,7 @@ namespace Business.Implements
         /// Este método utiliza el servicio _helpers para realizar la validación.
         /// Si la validación falla, se agrupan todos los errores en una sola excepción.
         /// </remarks>
-        protected async Task EnsureValid(TDto dto)
+        protected async Task EnsureValid(D dto)
         {
             var validationResult = await _helpers.Validate(dto);
             if (!validationResult.IsValid)
@@ -93,17 +99,17 @@ namespace Business.Implements
         /// 3. Registra la operación en el log
         /// 4. Maneja y registra cualquier error que pueda ocurrir
         /// </remarks>
-        public override async Task<List<TDto>> GetAllAsync()
+        public override async Task<List<D>> GetAllAsync()
         {
             try
             {
-                var entities = await _repository.GetAllAsync();
-                _logger.LogInformation($"Obteniendo todos los registros de {typeof(TEntity).Name}");
-                return _mapper.Map<IList<TDto>>(entities).ToList();
+                var entities = await _data.GetAllAsync();
+                _logger.LogInformation($"Obteniendo todos los registros de {typeof(T).Name}");
+                return _mapper.Map<IList<D>>(entities).ToList();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al obtener registros de {typeof(TEntity).Name}: {ex.Message}");
+                _logger.LogError($"Error al obtener registros de {typeof(T).Name}: {ex.Message}");
                 throw;
             }
         }
@@ -122,17 +128,17 @@ namespace Business.Implements
         /// Este método busca una entidad específica por ID y la convierte al DTO correspondiente.
         /// Si la entidad no existe, retorna null.
         /// </remarks>
-        public override async Task<TDto> GetByIdAsync(int id)
+        public override async Task<D> GetByIdAsync(int id)
         {
             try
             {
-                var entities = await _repository.GetByIdAsync(id);
-                _logger.LogInformation($"Obteniendo {typeof(TEntity).Name} con ID: {id}");
-                return _mapper.Map<TDto>(entities);
+                var entities = await _data.GetByIdAsync(id);
+                _logger.LogInformation($"Obteniendo {typeof(T).Name} con ID: {id}");
+                return _mapper.Map<D>(entities);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al obtener {typeof(TEntity).Name} con ID {id}: {ex.Message}");
+                _logger.LogError($"Error al obtener {typeof(T).Name} con ID {id}: {ex.Message}");
                 throw;
             }
         }
@@ -155,19 +161,19 @@ namespace Business.Implements
         /// 4. Mapea la entidad creada de vuelta a DTO y la retorna
         /// 5. Registra la operación y maneja errores
         /// </remarks>
-        public override async Task<TDto> CreateAsync(TDto dto)
+        public override async Task<D> CreateAsync(D dto)
         {
             try
             {
                 await EnsureValid(dto);
-                var entity = _mapper.Map<TEntity>(dto);
-                entity = await _repository.CreateAsync(entity);
-                _logger.LogInformation($"Creando nuevo {typeof(TEntity).Name}");
-                return _mapper.Map<TDto>(entity);
+                var entity = _mapper.Map<T>(dto);
+                entity = await _data.CreateAsync(entity);
+                _logger.LogInformation($"Creando nuevo {typeof(T).Name}");
+                return _mapper.Map<D>(entity);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear {typeof(TEntity).Name} desde DTO: {ex.Message}");
+                _logger.LogError($"Error al crear {typeof(T).Name} desde DTO: {ex.Message}");
                 throw;
             }
         }
@@ -186,20 +192,20 @@ namespace Business.Implements
         /// NOTA: Esta implementación actual solo valida y mapea el DTO, pero no persiste los cambios.
         /// Es probable que falte la llamada a _repository.UpdateAsync(entity) para completar la operación.
         /// </remarks>
-        public override async Task<TDto> UpdateAsync(TDto dto)
+        public override async Task<D> UpdateAsync(D dto)
         {
             try
             {
-                
+
                 await EnsureValid(dto);
-                var entity = _mapper.Map<TEntity>(dto);
-                entity = await _repository.UpdateAsync(entity);
-                _logger.LogInformation($"Actualizando {typeof(TEntity).Name} desde DTO");
-                return _mapper.Map<TDto>(entity);
+                var entity = _mapper.Map<T>(dto);
+                entity = await _data.UpdateAsync(entity);
+                _logger.LogInformation($"Actualizando {typeof(T).Name} desde DTO");
+                return _mapper.Map<D>(entity);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar {typeof(TEntity).Name} desde DTO: {ex.Message}");
+                _logger.LogError($"Error al actualizar {typeof(T).Name} desde DTO: {ex.Message}");
                 throw;
             }
         }
@@ -222,12 +228,12 @@ namespace Business.Implements
         {
             try
             {
-                _logger.LogInformation($"Eliminando {typeof(TEntity).Name} con ID: {id}");
-                return await _repository.DeleteAsync(id);
+                _logger.LogInformation($"Eliminando {typeof(T).Name} con ID: {id}");
+                return await _data.DeleteAsync(id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar {typeof(TEntity).Name} con ID {id}: {ex.Message}");
+                _logger.LogError($"Error al eliminar {typeof(T).Name} con ID {id}: {ex.Message}");
                 throw;
             }
         }
