@@ -91,7 +91,7 @@ namespace Business.Implements
         ///</summary>
         /// <param name="dto">Objeto UserDto con los datos del nuevo usuario.</param>
         /// <returns>El usuario creado como UserDto.</returns>
-        public async Task<UserDto> CreateAsync(UserDto dto)
+        public async override Task<UserDto> CreateAsync(UserDto dto)
         {
             var user = _mapper.Map<User>(dto);
             user.Password = HashPassword(user.Password);
