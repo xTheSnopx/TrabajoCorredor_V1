@@ -39,7 +39,7 @@ namespace Business.Implements
         /// </summary>
         protected readonly IGenericIHelpers _helpers;
 
-        protected readonly IBaseData<T> _data;
+        protected readonly IBaseModelData<T> _data;
 
         protected readonly ILogger _logger;
 
@@ -52,7 +52,7 @@ namespace Business.Implements
         /// <param name="mapper">Instancia de AutoMapper para mapeo entre DTOs y entidades</param>
         /// <param name="helpers">Servicio de utilidades que proporciona funcionalidades como validación</param>
         public BaseBusiness(
-            IBaseData<T> data,
+            IBaseModelData<T> data,
             IMapper mapper,
             ILogger logger,
             IGenericIHelpers helpers)
