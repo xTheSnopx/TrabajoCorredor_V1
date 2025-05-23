@@ -12,7 +12,7 @@ namespace Entity.Model
         public int RolId { get; set; }
         public int UserId { get; set; }
 
-        public required Rol Rol { get; set; }
-        public required User User { get; set; }
+        public  Rol Rol { get; set; }
+        public  User User { get; set; }
     }
 }
