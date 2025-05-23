@@ -10,6 +10,7 @@ using Entity.Dtos.RolUserDTO;
 using Entity.Dtos.UserDTO;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Utilities.Exceptions;
 using Utilities.Interfaces;
 using Utilities.Mail;

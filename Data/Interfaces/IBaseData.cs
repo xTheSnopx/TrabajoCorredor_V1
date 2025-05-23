@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entity.Model.Base;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,12 +9,13 @@ using static Dapper.SqlMapper;
 
 namespace Data.Interfaces
 
-{ 
+{
     /// <summary>
     /// Interfaz que me define los métodos generales
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IBaseData<T> where T : class 
+
+    public interface IBaseModelData<T> where T : BaseEntity
     {
         /// <summary>
         /// Método para obtener una entidad por su ID

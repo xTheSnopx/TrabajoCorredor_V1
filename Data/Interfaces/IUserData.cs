@@ -7,7 +7,7 @@ using Entity.Model;
 
 namespace Data.Interfaces
 {
-    public interface IUserData : IBaseData<User>
+    public interface IUserData : IBaseModelData<User>
     {
         Task<User> LoginAsync(string email, string password);
         Task<bool> ChangePasswordAsync(int userId,string password);
