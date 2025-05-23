@@ -23,7 +23,7 @@ namespace Web.Controllers.Implements
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdatePartialRole([FromBody]  UpdateRolDto dto)
+        public async Task<IActionResult> UpdatePartialRole(int id , int roleId,[FromBody]  UpdateRolDto dto)
         {
             try
             {

@@ -217,7 +217,6 @@ namespace Business.Implements
             string token = _jwtGenerator.GenerarTokenRecuperacion(usuario);
 
             // Creamos el enlace que el usuario deberá seguir para restablecer su contraseña
-            // Nota: En producción, la URL base debería configurarse en appsettings.json
             string resetLink = $"{_appSettings.ResetPasswordBaseUrl}?token={token}";
 
             _logger.LogInformation($"Generando enlace de recuperación de contraseña para {email}");

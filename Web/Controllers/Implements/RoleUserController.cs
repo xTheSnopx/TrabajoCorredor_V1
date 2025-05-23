@@ -27,7 +27,7 @@ namespace Web.Controllers.Implements
         {
             try
             {
-                var result = await _roleUserBusiness.UpdateParcialRoleUserAsync(id,roleId, dto);
+                var result = await _roleUserBusiness.UpdateParcialRoleUserAsync(dto);
                 if (!result)
                     return NotFound($"Asignación de rol con ID {id} no encontrada");
 
