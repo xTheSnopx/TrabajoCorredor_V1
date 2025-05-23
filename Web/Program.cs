@@ -5,7 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 
 using Entity.Context;
 using Data.Interfaces;
-using Data.Implements.BaseDate;
 using Data.Implements.RolData;
 using Data.Implements.RolUserData;
 using Data.Implements.UserDate;
@@ -19,6 +18,14 @@ using Web.ServiceExtension;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Business.Services;
+using Data.Implements.BaseDate;
+using Microsoft.Xrm.Sdk.Deployment;
+
+
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +54,11 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddScoped<IJwtGenerator, GenerateTokenJwt>();
 
 // Register generic repositories and business logic
-builder.Services.AddScoped(typeof(IBaseData<>), typeof(BaseData<>));
+
+
+// Existing code remains unchanged
+builder.Services.AddScoped(typeof(IBaseModelData<>), typeof(BaseData));
+
 builder.Services.AddScoped(typeof(IBaseBusiness<,>), typeof(BaseBusiness<,>));
 
 // Register User-specific services

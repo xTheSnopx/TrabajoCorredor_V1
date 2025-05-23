@@ -1,20 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Business.Interfaces;
+using Entity.Model.Base;
+using Entity.Dtos.Base;
 
 namespace Web.Controllers.Implements
 {
     [ApiController]
     public abstract class GenericController<TDto, TEntity> : ControllerBase
-        where TEntity : class
+    where TEntity : BaseEntity
+    where TDto : BaseDto
     {
-        protected readonly IBaseBusiness<TDto, TEntity> _business;
+        protected readonly IBaseBusiness<TEntity, TDto> _business;
         protected readonly ILogger<GenericController<TDto, TEntity>> _logger;
 
-        protected GenericController(IBaseBusiness<TDto, TEntity> business, ILogger<GenericController<TDto, TEntity>> logger)
+        protected GenericController(IBaseBusiness<TEntity, TDto> business, ILogger<GenericController<TDto, TEntity>> logger)
         {
             _business = business;
             _logger = logger;
         }
+   
+
+
+
 
         [HttpGet]
         public virtual async Task<IActionResult> GetAll()

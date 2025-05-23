@@ -1,4 +1,4 @@
-﻿using Data.Implements.BaseDate;
+﻿using Data.Implements.BaseData;
 using Data.Interfaces; // Añade esta línea
 using Entity.Context;
 using Entity.Model;
