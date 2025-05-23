@@ -19,7 +19,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Business.Services;
 using Data.Implements.BaseDate;
-using Microsoft.Xrm.Sdk.Deployment;
+using Data.Implements.BaseData;
+
 
 
 
@@ -57,7 +58,7 @@ builder.Services.AddScoped<IJwtGenerator, GenerateTokenJwt>();
 
 
 // Existing code remains unchanged
-builder.Services.AddScoped(typeof(IBaseModelData<>), typeof(BaseData));
+builder.Services.AddScoped(typeof(IBaseModelData<>), typeof(BaseModelData<>));
 
 builder.Services.AddScoped(typeof(IBaseBusiness<,>), typeof(BaseBusiness<,>));
 
