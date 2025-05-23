@@ -13,6 +13,6 @@ namespace Entity.Dtos.UserDTO
     /// </summary>
     public class UpdatePasswordUserDto : BaseDto
     {
-        public required string Password { get; set; }
+        public  string Password { get; set; }
     }
 }

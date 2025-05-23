@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Implements.RolUserData;
 
-public class RolUserData : BaseData<RolUser>, IRolUserData
+public class RolUserData : BaseModelData<RolUser>, IRolUserData
 {
     public RolUserData(ApplicationDbContext context) : base(context)
     {

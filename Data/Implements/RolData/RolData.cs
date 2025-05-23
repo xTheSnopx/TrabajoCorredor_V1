@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Implements.RolData
 {
-    public class RolData : BaseData<Rol> , IRolData
+    public class RolData : BaseModelData<Rol> , IRolData
     {
         public RolData(ApplicationDbContext context) : base(context)
         {
@@ -33,15 +33,10 @@ namespace Data.Implements.RolData
         {
             var existingRol = await _context.Roles.FindAsync(rol.Id);
             if (existingRol == null) return false;
-            // Update only the fields that are not null
-            if (!string.IsNullOrEmpty(rol.Name)) existingRol.Name = rol.Name;
-            if (!string.IsNullOrEmpty(rol.Description)) existingRol.Description = rol.Description;
             _context.Roles.Update(existingRol);
             await _context.SaveChangesAsync();
             return true;
         }
-
-
 
     }
 }
