@@ -1,4 +1,6 @@
 ﻿using Entity.Context;
+using Entity.Model.Base;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,9 +11,9 @@ using static Dapper.SqlMapper;
 
 namespace Data.Implements.BaseDate
 {
-    public class BaseData<T> : ABaseData<T> where T : class
+    public class BaseModelData<T> : ABaseModelData<T> where T : BaseEntity
     {
-        public BaseData(ApplicationDbContext context) : base(context)
+        public BaseModelData(ApplicationDbContext context) : base(context)
         {
         }
 

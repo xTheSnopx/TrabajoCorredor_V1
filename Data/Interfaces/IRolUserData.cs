@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Interfaces
 {
-    public interface IRolUserData : IBaseData<RolUser>
+    public interface IRolUserData : IBaseModelData<RolUser>
     {
         Task<bool> UpdatePartial(RolUser rolUser);
     }

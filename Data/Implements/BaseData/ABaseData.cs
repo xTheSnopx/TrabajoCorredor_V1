@@ -1,6 +1,7 @@
 ﻿using Data.Interfaces;
 using Entity.Context;
-using Entity.Model;
+using Entity.Model.Base;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,13 @@ namespace Data.Implements.BaseDate
     /// Clase abstracta para poder sobre escribir métodos e incluir nuevos metodos sin cambiar la Interfaz
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ABaseData<T> : IBaseData<T> where T : class
+    public abstract class ABaseModelData<T> : IBaseModelData<T> where T : BaseEntity
+    {
     {
         protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        protected ABaseData(ApplicationDbContext context)
+        protected ABaseModelData(ApplicationDbContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();

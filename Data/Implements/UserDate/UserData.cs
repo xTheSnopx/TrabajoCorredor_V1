@@ -7,12 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-
-
-
 namespace Data.Implements.UserDate
 {   
-    public class UserData : BaseData<User> , IUserData
+    public class UserData : BaseModelData<User> , IUserData
     {
 
         public UserData(ApplicationDbContext context) : base(context)
