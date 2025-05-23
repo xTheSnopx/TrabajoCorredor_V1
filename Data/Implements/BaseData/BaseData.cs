@@ -1,4 +1,5 @@
-﻿using Entity.Context;
+﻿using Data.Implements.BaseDate;
+using Entity.Context;
 using Entity.Model.Base;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
 
-namespace Data.Implements.BaseDate
+namespace Data.Implements.BaseData
 {
     public class BaseModelData<T> : ABaseModelData<T> where T : BaseEntity
     {
