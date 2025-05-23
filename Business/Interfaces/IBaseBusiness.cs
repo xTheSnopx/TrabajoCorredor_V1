@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Business.Interfaces
 {
     public interface IBaseBusiness<T, D> where T : BaseEntity where D : BaseDto
+       
     {
         /// <summary>
         /// Obtiene todas las entidades desde la base de datos.
