@@ -39,8 +39,16 @@ namespace Business.Implements
         /// </summary>
         protected readonly IGenericIHelpers _helpers;
 
+        /// <summary>
+        /// Datos del modelo base encapsulados de solo lectura.
+        /// Proporciona acceso seguro a la información de la entidad tipo T.
+        /// </summary>
         protected readonly IBaseModelData<T> _data;
 
+        /// <summary>
+        /// Logger para registrar eventos, errores y operaciones de la clase.
+        /// Inyectado por dependencia y accesible desde clases derivadas.
+        /// </summary>
         protected readonly ILogger _logger;
 
 

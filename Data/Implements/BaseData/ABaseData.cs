@@ -19,7 +19,7 @@ namespace Data.Implements.BaseDate
     /// <typeparam name="T"></typeparam>
     public abstract class ABaseModelData<T> : IBaseModelData<T> where T : BaseEntity
     {
-    {
+    
         protected readonly ApplicationDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
