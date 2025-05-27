@@ -17,6 +17,6 @@ namespace Entity.Model
         //Ciudad
         public City city { set; get; }
         // Codigo Postal
-        public string ZipCode { get; set; }
+        public int ZipCode { get; set; }
     }
 }

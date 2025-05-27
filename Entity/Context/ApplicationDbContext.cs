@@ -26,6 +26,9 @@ namespace Entity.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Rol> Roles { get; set; }
         public DbSet<RolUser> RolUsers { get; set; }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Form> Forms { get; set; }
+        public DbSet<Module> Modules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
