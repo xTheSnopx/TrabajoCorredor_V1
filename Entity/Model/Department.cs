@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Model
 {
-    internal class Department : BaseEntity
+    public class Department : BaseEntity
     {
         // Propiedades de la clase Departamento
 
